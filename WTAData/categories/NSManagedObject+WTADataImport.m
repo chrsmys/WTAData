@@ -175,7 +175,7 @@
                 if ([value isKindOfClass:[NSString class]])
                 {
                     NSDateFormatter *dateFormatter = defaultDateFormatter;
-                    
+
                     NSString *customFormat = [description userInfo][WTAImportDateFormatKey];
                     if (customFormat)
                     {
@@ -193,6 +193,17 @@
                     date = (NSDate*)value;
                 }
                 [self importValue:date forKey:key];
+            } else if ([description attributeType] == NSStringAttributeType) {
+                [self importValue:[value description] forKey:key];
+            } else if (![value isKindOfClass:[NSNumber class]]
+                       && ([description attributeType] == NSFloatAttributeType
+                           || [description attributeType] == NSDoubleAttributeType
+                           || [description attributeType] == NSDecimalAttributeType
+                           || [description attributeType] == NSInteger64AttributeType
+                           || [description attributeType] == NSInteger32AttributeType
+                           || [description attributeType] == NSInteger16AttributeType))
+            {
+                           [self importValue:@(0) forKey:key];
             }
             else
             {
