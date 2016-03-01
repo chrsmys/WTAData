@@ -193,7 +193,8 @@
                     date = (NSDate*)value;
                 }
                 [self importValue:date forKey:key];
-            } else if ([description attributeType] == NSStringAttributeType) {
+            } else if (![value isEqual:[NSNull null]]
+                       && [description attributeType] == NSStringAttributeType) {
                 [self importValue:[value description] forKey:key];
             } else if (![value isKindOfClass:[NSNumber class]]
                        && ([description attributeType] == NSFloatAttributeType
@@ -203,7 +204,7 @@
                            || [description attributeType] == NSInteger32AttributeType
                            || [description attributeType] == NSInteger16AttributeType))
             {
-                           [self importValue:@(0) forKey:key];
+                [self importValue:[NSNull null] forKey:key];
             }
             else
             {
